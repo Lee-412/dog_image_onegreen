@@ -1,7 +1,8 @@
 
 import { useState } from "react";
-import { NumberInput, Button, Group, Loader, Image, Container, Grid, Badge, Skeleton } from "@mantine/core";
+import { NumberInput, Button, Group, Loader, Image, Container, Grid, Badge, Skeleton, Divider } from "@mantine/core";
 import "./Demo.css";
+
 
 const Demo = () => {
     const [value, setValue] = useState<number | "">("");
@@ -10,6 +11,7 @@ const Demo = () => {
     const [selectedImages, setSelectedImages] = useState<Set<number>>(new Set());
     const [loadingIndexes, setLoadingIndexes] = useState<Set<number>>(new Set());
 
+    // fetch data from the API with a given count
     const fetchDogImages = async (count: number) => {
         try {
             const response = await fetch(`https://dog.ceo/api/breeds/image/random/${count}`);
@@ -21,6 +23,7 @@ const Demo = () => {
         }
     };
 
+    // handle loading images
     const handleLoad = async () => {
         if (!value || value < 1) return;
         setLoading(true);
@@ -51,6 +54,7 @@ const Demo = () => {
         }
     };
 
+    // handle clearing images
     const handleClear = () => {
         setValue("");
         setImages(images.filter((_, index) => selectedImages.has(index)));
@@ -58,6 +62,7 @@ const Demo = () => {
         setLoading(false);
     };
 
+    // handle image selection
     const toggleSelectImage = (index: number) => {
         setSelectedImages((prevSelected) => {
             const newSelected = new Set(prevSelected);
@@ -71,7 +76,7 @@ const Demo = () => {
     };
 
     return (
-        <Container size="lg" py="lg" className="demo-container">
+        <Container size="lg" py="xs" className="demo-container">
             <Group mt="md" align="center">
                 <NumberInput
                     width={245}
@@ -81,13 +86,13 @@ const Demo = () => {
                     min={1}
                     allowNegative={false}
                 />
-                <Button onClick={handleLoad} disabled={loading || !value}>
-                    {loading ? <Loader size="xs" color="white" /> : "Load"}
+                <Button onClick={handleLoad} disabled={loading || !value} >
+                    {loading ? <Loader size="xs" color="white" /> : "Load 🐶"}
                 </Button>
                 <Button color="red" onClick={handleClear}>Clear</Button>
                 {loading && <Loader size="lg" />}
             </Group>
-
+            <Divider my="md" />
             <Grid gutter="md" mt="lg">
                 {images.map((img, index) => (
                     <Grid.Col key={index} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
@@ -106,7 +111,7 @@ const Demo = () => {
                     </Grid.Col>
                 ))}
             </Grid>
-        </Container>
+        </Container >
     );
 };
 
